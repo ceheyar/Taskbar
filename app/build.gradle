@@ -59,17 +59,6 @@ android {
         jvmTarget = '1.8'
     }
 
-    signingConfigs {
-        release {
-            if(System.getenv("KSTOREFILE") != null)
-                storeFile file(System.getenv("KSTOREFILE"))
-
-            storePassword System.getenv("KSTOREPWD")
-            keyAlias System.getenv("KEYALIAS")
-            keyPassword System.getenv("KEYPWD")
-        }
-    }
-
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
@@ -80,7 +69,6 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
             manifestPlaceholders = [appName: "@string/tb_app_name"]
 
             applicationVariants.all { variant ->
