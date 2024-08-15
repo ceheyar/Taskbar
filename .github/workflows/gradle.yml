@@ -1,18 +1,11 @@
-name: CI Check
+name: CI Build
 
 on:
-  push:
-    branches:
-    - master
-  pull_request:
-    branches:
-    - master
+  workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -20,8 +13,14 @@ jobs:
       with:
         java-version: 11
     - name: Build
-      run: ./gradlew assembleFreeDebug
+      run: ./gradlew assemblePaidRelease
     - name: Spotless Check
       run: ./gradlew spotlessCheck
     - name: Run tests
-      run: ./gradlew testFreeDebug
+      run: ./gradlew testPaidRelease
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Release APK
+        path: app/build/outputs/apk/app/release/*.apk
+        compression-level: 9
